@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -82,7 +83,9 @@ class Privacy extends StatelessWidget {
                     List<Placemark> placemarks = await placemarkFromCoordinates(
                         position.latitude, position.longitude);
                     for (var element in placemarks) {
-                      print(element.toJson());
+                      if (kDebugMode) {
+                        print(element.toJson());
+                      }
                     }
                   }
                 },

@@ -5,65 +5,18 @@ import 'package:whatapp_clone_with_socket_io/constants/others.dart';
 import 'package:whatapp_clone_with_socket_io/models/chat_model.dart';
 import 'package:whatapp_clone_with_socket_io/routes/routes_all.dart';
 import 'package:whatapp_clone_with_socket_io/screen_or_pages/fragments/custom_ui/custom_card.dart';
+import 'package:whatapp_clone_with_socket_io/screen_or_pages/select_contacts.dart';
 
 class Chats extends StatefulWidget {
-  const Chats({super.key});
+  final List<ChatModel>? chatsModelList;
+  final ChatModel? sourceChatModel;
+  const Chats({super.key, this.chatsModelList, this.sourceChatModel});
 
   @override
   State<Chats> createState() => _ChatsState();
 }
 
 class _ChatsState extends State<Chats> {
-  List<ChatModel> chatsModelList = [
-    ChatModel(
-        name: "Rehmat",
-        icon: "assets/images/person.png",
-        isGroup: false,
-        time: setDateTime(DateTime.now())!,
-        currentMessage: "hi how are you",
-        status: '',
-        isSelect: false),
-    ChatModel(
-        name: "REKhan",
-        icon: "assets/images/person.png",
-        isGroup: false,
-        time: setDateTime(DateTime.now())!,
-        currentMessage: "hi how are you",
-        status: '',
-        isSelect: false),
-    ChatModel(
-        name: "Khan",
-        icon: "assets/images/person.png",
-        isGroup: false,
-        time: setDateTime(DateTime.now())!,
-        currentMessage: "hi how are you",
-        status: '',
-        isSelect: false),
-    ChatModel(
-        name: "King",
-        icon: "assets/images/group.png",
-        isGroup: true,
-        time: setDateTime(DateTime.now())!,
-        currentMessage: "hi how are you",
-        status: '',
-        isSelect: false),
-    ChatModel(
-        name: "King",
-        icon: "assets/images/person.png",
-        isGroup: false,
-        time: setDateTime(DateTime.now())!,
-        currentMessage: "hi how are you",
-        status: '',
-        isSelect: false),
-    ChatModel(
-        name: "King",
-        icon: "assets/images/group.png",
-        isGroup: true,
-        time: setDateTime(DateTime.now())!,
-        currentMessage: "hi how are you",
-        status: '',
-        isSelect: false),
-  ];
   ChatsMenuItems? chatsMenuItems;
   @override
   Widget build(BuildContext context) {
@@ -138,13 +91,15 @@ class _ChatsState extends State<Chats> {
           children: [
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: chatsModelList.length,
+              itemCount: widget.chatsModelList!.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return Column(
                   children: [
                     Divider(thickness: 0.5.sp),
-                    CustomCard(chatModel: chatsModelList[index]),
+                    CustomCard(
+                        chatModel: widget.chatsModelList![index],
+                        sourceChatModel: widget.sourceChatModel),
                   ],
                 );
               },
@@ -160,7 +115,10 @@ class _ChatsState extends State<Chats> {
           Icons.chat_outlined,
           color: white,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const SelectContacts()));
+        },
       ),
     );
   }

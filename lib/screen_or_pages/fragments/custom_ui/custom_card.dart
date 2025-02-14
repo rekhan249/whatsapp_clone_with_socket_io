@@ -5,8 +5,9 @@ import 'package:whatapp_clone_with_socket_io/models/chat_model.dart';
 import 'package:whatapp_clone_with_socket_io/screen_or_pages/fragments/custom_ui/individual.dart';
 
 class CustomCard extends StatelessWidget {
-  final ChatModel chatModel;
-  const CustomCard({super.key, required this.chatModel});
+  final ChatModel? chatModel;
+  final ChatModel? sourceChatModel;
+  const CustomCard({super.key, this.chatModel, this.sourceChatModel});
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +16,17 @@ class CustomCard extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Individual(chatModel: chatModel)));
+                builder: (context) => Individual(
+                    chatModel: chatModel!, sourceChatModel: sourceChatModel)));
       },
       child: ListTile(
         tileColor: white,
         minTileHeight: 0,
         leading: CircleAvatar(
           radius: 28.r,
-          backgroundColor: grey.withOpacity(0.2),
+          backgroundColor: grey,
           child: Image.asset(
-            chatModel.isGroup
+            chatModel!.isGroup
                 ? "assets/images/group.png"
                 : "assets/images/person.png",
             color: grey,
@@ -33,7 +35,7 @@ class CustomCard extends StatelessWidget {
           ),
         ),
         title: Text(
-          chatModel.name,
+          chatModel!.name,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Row(
@@ -41,12 +43,12 @@ class CustomCard extends StatelessWidget {
             Icon(Icons.done_all, color: grey, size: 16.sp),
             kWidthFive,
             Text(
-              chatModel.currentMessage,
+              chatModel!.currentMessage,
               style: const TextStyle(color: grey),
             ),
           ],
         ),
-        trailing: Text(chatModel.time),
+        trailing: Text(chatModel!.time),
       ),
     );
   }

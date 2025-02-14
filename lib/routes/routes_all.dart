@@ -5,7 +5,7 @@ import 'package:whatapp_clone_with_socket_io/screen_or_pages/fragments/calls.dar
 import 'package:whatapp_clone_with_socket_io/screen_or_pages/fragments/chats.dart';
 import 'package:whatapp_clone_with_socket_io/screen_or_pages/fragments/status.dart';
 import 'package:whatapp_clone_with_socket_io/screen_or_pages/home.dart';
-import 'package:whatapp_clone_with_socket_io/screen_or_pages/login.dart';
+import 'package:whatapp_clone_with_socket_io/screen_or_pages/login_screen.dart';
 import 'package:whatapp_clone_with_socket_io/screen_or_pages/select_contacts.dart';
 import 'package:whatapp_clone_with_socket_io/screen_or_pages/settings.dart';
 
@@ -25,7 +25,7 @@ class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case login:
-        return MaterialPageRoute(builder: (context) => const Login());
+        return MaterialPageRoute(builder: (context) => const LoginScreen());
       case home:
         return MaterialPageRoute(builder: (context) => const Home());
       case setting:

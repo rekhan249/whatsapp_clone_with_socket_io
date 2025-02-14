@@ -1,15 +1,23 @@
+// ignore_for_file: library_prefixes
+
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatapp_clone_with_socket_io/constants/colors.dart';
 import 'package:whatapp_clone_with_socket_io/constants/others.dart';
 import 'package:whatapp_clone_with_socket_io/constants/strings.dart';
 import 'package:whatapp_clone_with_socket_io/models/chat_model.dart';
+import 'package:whatapp_clone_with_socket_io/models/message_model.dart';
 import 'package:whatapp_clone_with_socket_io/screen_or_pages/fragments/chats.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:whatapp_clone_with_socket_io/screen_or_pages/fragments/custom_ui/own_message_card.dart';
+import 'package:whatapp_clone_with_socket_io/screen_or_pages/fragments/custom_ui/reply_card.dart';
 
 class Individual extends StatefulWidget {
-  final ChatModel chatModel;
-  const Individual({super.key, required this.chatModel});
+  final ChatModel? chatModel;
+  final ChatModel? sourceChatModel;
+  const Individual({super.key, this.chatModel, this.sourceChatModel});
 
   @override
   State<Individual> createState() => _IndividualState();
@@ -19,8 +27,13 @@ class _IndividualState extends State<Individual> {
   SingleChatMenuItems? singleChatMenuItems;
   bool show = false;
   FocusNode focusNode = FocusNode();
+  IO.Socket? socket;
+  bool micOrSend = false;
+  List<MessageModel> messageModelList = [];
   @override
   void initState() {
+    super.initState();
+
     focusNode.addListener(
       () {
         if (focusNode.hasFocus) {
@@ -30,10 +43,46 @@ class _IndividualState extends State<Individual> {
         }
       },
     );
-    super.initState();
+
+    socket = IO.io('http://192.168.100.227:5000', <String, dynamic>{
+      'transports': ['websocket'], // Ensure WebSocket transport
+      'autoConnect': true,
+    });
+
+    socket?.on('connect', (_) {
+      if (kDebugMode) {
+        print('Connected to server');
+      }
+      socket?.emit('signin', widget.sourceChatModel!.id);
+    });
+    socket?.onConnect((data) {
+      if (kDebugMode) {
+        print(socket!.connected);
+      }
+      socket?.on("message", (data) {
+        setMessage("destination", data["message"]);
+      });
+    });
+  }
+
+  void sendMessages(String message, int sourceId, targetId) {
+    setMessage("source", message);
+    socket?.emit("message",
+        {"message": message, "sourceId": sourceId, "targetId": targetId});
+  }
+
+  void setMessage(String type, String message) {
+    MessageModel messageModel = MessageModel(
+        type: type, message: message, time: DateTime.now().toString());
+    setState(() {
+      setState(() {
+        messageModelList.add(messageModel);
+      });
+    });
   }
 
   var textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +108,8 @@ class _IndividualState extends State<Individual> {
             ),
             CircleAvatar(
               radius: 23,
-              backgroundColor: grey.withOpacity(0.5),
-              child: Image.asset(widget.chatModel.icon, height: 35, width: 35),
+              backgroundColor: grey.withValues(alpha: 0.4),
+              child: Image.asset(widget.chatModel!.icon, height: 35, width: 35),
             ),
           ],
         ),
@@ -68,11 +117,9 @@ class _IndividualState extends State<Individual> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.chatModel.name,
+              widget.chatModel!.name,
               style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w600,
-                  color: black.withOpacity(0.6)),
+                  fontSize: 20.sp, fontWeight: FontWeight.w600, color: black),
             ),
             Text(
               "last seen time ago",
@@ -168,34 +215,57 @@ class _IndividualState extends State<Individual> {
               Navigator.pop(context);
             }
           },
-          child: Stack(
+          child: Column(
             children: [
-              ListView(
-                children: const [],
+              Expanded(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  shrinkWrap: true,
+                  itemCount: messageModelList.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == messageModelList.length) {
+                      return Container(height: 30);
+                    }
+                    if (messageModelList[index].type == "source") {
+                      return OwnMessageCard(
+                        message: messageModelList[index].message,
+                        time: messageModelList[index].time,
+                      );
+                    } else {
+                      return ReplyCard(
+                        reply: messageModelList[index].message,
+                        time: messageModelList[index].time,
+                      );
+                    }
+                  },
+                ),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width - 55,
-                          decoration: const BoxDecoration(),
-                          child: Card(
-                            margin: EdgeInsets.only(
-                                left: 2.w, right: 2.w, bottom: 8.h),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.r)),
-                            child: TextFormField(
-                              controller: textController,
-                              focusNode: focusNode,
-                              textAlignVertical: TextAlignVertical.center,
-                              keyboardType: TextInputType.multiline,
-                              minLines: 1,
-                              maxLines: 5,
-                              decoration: InputDecoration(
+                child: Container(
+                  margin: const EdgeInsets.all(0),
+                  height: 60,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width - 55,
+                            decoration: const BoxDecoration(),
+                            child: Card(
+                              margin: EdgeInsets.only(
+                                  left: 2.w, right: 2.w, bottom: 8.h),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.r)),
+                              child: TextFormField(
+                                controller: textController,
+                                focusNode: focusNode,
+                                textAlignVertical: TextAlignVertical.center,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 5,
+                                decoration: InputDecoration(
                                   focusedBorder: const UnderlineInputBorder(
                                       borderSide: BorderSide.none),
                                   enabledBorder: const UnderlineInputBorder(
@@ -229,25 +299,55 @@ class _IndividualState extends State<Individual> {
                                           icon: const Icon(Icons.camera_alt,
                                               color: tealGreen)),
                                     ],
-                                  )),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  if (value.isNotEmpty) {
+                                    setState(() {
+                                      micOrSend = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      micOrSend = true;
+                                    });
+                                  }
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.grey.withOpacity(0.2),
-                            radius: 25.r,
-                            child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.mic,
-                                    color: tealGreen, size: 30.sp)),
-                          ),
-                        )
-                      ],
-                    ),
-                    show ? emojiPicker() : Container()
-                  ],
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 4.0),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              radius: 25.r,
+                              child: IconButton(
+                                  onPressed: () {
+                                    if (micOrSend) {
+                                      _scrollController.animateTo(
+                                          _scrollController
+                                              .position.maxScrollExtent,
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          curve: Curves.ease);
+                                      sendMessages(
+                                          textController.text,
+                                          widget.sourceChatModel!.id,
+                                          widget.chatModel!.id);
+                                      textController.clear();
+                                      setState(() {
+                                        micOrSend = false;
+                                      });
+                                    }
+                                  },
+                                  icon: Icon(micOrSend ? Icons.send : Icons.mic,
+                                      color: tealGreen, size: 30.sp)),
+                            ),
+                          )
+                        ],
+                      ),
+                      show ? emojiPicker() : Container()
+                    ],
+                  ),
                 ),
               )
             ],

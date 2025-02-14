@@ -6,6 +6,7 @@ class ChatModel {
   final String currentMessage;
   final String status;
   bool isSelect;
+  int id;
 
   ChatModel(
       {required this.name,
@@ -14,7 +15,8 @@ class ChatModel {
       required this.time,
       required this.currentMessage,
       required this.status,
-      required this.isSelect});
+      required this.isSelect,
+      required this.id});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -25,18 +27,19 @@ class ChatModel {
       'currentMessage': currentMessage,
       'status': status,
       'isSelect': isSelect,
+      'id': id
     };
   }
 
   factory ChatModel.fromMap(Map<String, dynamic> map) {
     return ChatModel(
-      name: map['name'],
-      icon: map['icon'],
-      isGroup: map['isGroup'],
-      time: map['time'],
-      currentMessage: map['currentMessage'],
-      status: map['status'],
-      isSelect: map['isSelect'],
-    );
+        name: map['name'],
+        icon: map['icon'],
+        isGroup: map['isGroup'],
+        time: map['time'],
+        currentMessage: map['currentMessage'],
+        status: map['status'],
+        isSelect: map['isSelect'],
+        id: map['id']);
   }
 }

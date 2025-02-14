@@ -25,7 +25,8 @@ class _SelectContactsState extends State<SelectContacts> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 1),
     ChatModel(
         name: "Rehmat",
         icon: "assets/images/person.png",
@@ -33,7 +34,8 @@ class _SelectContactsState extends State<SelectContacts> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 2),
     ChatModel(
         name: "REKhan",
         icon: "assets/images/person.png",
@@ -41,7 +43,8 @@ class _SelectContactsState extends State<SelectContacts> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 3),
     ChatModel(
         name: "Khan",
         icon: "assets/images/person.png",
@@ -49,7 +52,8 @@ class _SelectContactsState extends State<SelectContacts> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 4),
     ChatModel(
         name: "REKhan",
         icon: "assets/images/person.png",
@@ -57,7 +61,8 @@ class _SelectContactsState extends State<SelectContacts> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 5),
     ChatModel(
         name: "King",
         icon: "assets/images/group.png",
@@ -65,7 +70,8 @@ class _SelectContactsState extends State<SelectContacts> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 6),
     ChatModel(
         name: "King Khan",
         icon: "assets/images/group.png",
@@ -73,7 +79,8 @@ class _SelectContactsState extends State<SelectContacts> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 7),
     ChatModel(
         name: "REKhan",
         icon: "assets/images/person.png",
@@ -81,7 +88,8 @@ class _SelectContactsState extends State<SelectContacts> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 8),
     ChatModel(
         name: "Come fall",
         icon: "assets/images/group.png",
@@ -89,7 +97,8 @@ class _SelectContactsState extends State<SelectContacts> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 9),
   ];
   @override
   Widget build(BuildContext context) {
@@ -116,9 +125,7 @@ class _SelectContactsState extends State<SelectContacts> {
             Text(
               "Select Contact",
               style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w600,
-                  color: black.withOpacity(0.5)),
+                  fontSize: 20.sp, fontWeight: FontWeight.w600, color: black),
             ),
             Text(
               "Select Contact",

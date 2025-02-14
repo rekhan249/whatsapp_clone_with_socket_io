@@ -23,7 +23,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 1),
     ChatModel(
         name: "Rehmat",
         icon: "assets/images/person.png",
@@ -31,7 +32,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 2),
     ChatModel(
         name: "REKhan",
         icon: "assets/images/person.png",
@@ -39,7 +41,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 3),
     ChatModel(
         name: "Khan",
         icon: "assets/images/person.png",
@@ -47,7 +50,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 4),
     ChatModel(
         name: "REKhan",
         icon: "assets/images/person.png",
@@ -55,7 +59,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 5),
     ChatModel(
         name: "King",
         icon: "assets/images/group.png",
@@ -63,7 +68,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 6),
     ChatModel(
         name: "King Khan",
         icon: "assets/images/group.png",
@@ -71,7 +77,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 7),
     ChatModel(
         name: "REKhan",
         icon: "assets/images/person.png",
@@ -79,7 +86,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 8),
     ChatModel(
         name: "Come fall",
         icon: "assets/images/group.png",
@@ -87,7 +95,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: setDateTime(DateTime.now())!,
         currentMessage: "hi how are you",
         status: 'Hey Hi,look I am using whatsapp here',
-        isSelect: false),
+        isSelect: false,
+        id: 9),
   ];
   List<ChatModel> selectionForGroup = [];
   @override
@@ -115,9 +124,7 @@ class _CreateGroupState extends State<CreateGroup> {
             Text(
               "New Group",
               style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w600,
-                  color: black.withOpacity(0.5)),
+                  fontSize: 20.sp, fontWeight: FontWeight.w600, color: black),
             ),
             Text(
               "Add Participants",
@@ -215,7 +222,7 @@ class CustomCardForGroup extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 25.r,
-                backgroundColor: grey.withOpacity(0.5),
+                backgroundColor: grey,
                 child: Image.asset(contact.icon, height: 40.h, width: 40.w),
               ),
               Positioned(

@@ -20,7 +20,7 @@ class ContactCard extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 25.r,
-              backgroundColor: grey.withOpacity(0.5),
+              backgroundColor: grey,
               child: Image.asset("assets/images/person.png",
                   height: 40.h, width: 40.w),
             ),
@@ -43,8 +43,7 @@ class ContactCard extends StatelessWidget {
       ),
       title: Text(
         contact.name,
-        style: TextStyle(
-            fontWeight: FontWeight.w600, color: black.withOpacity(0.6)),
+        style: const TextStyle(fontWeight: FontWeight.w600, color: black),
       ),
       subtitle: Text(
         contact.status,

@@ -68,7 +68,7 @@ class _CameraState extends State<Camera> {
                     icon: Icon(
                       flash ? Icons.flash_on : Icons.flash_off,
                       size: 32.sp,
-                      color: white.withOpacity(0.8),
+                      color: white,
                     )),
                 GestureDetector(
                   onLongPress: () async {
@@ -101,7 +101,7 @@ class _CameraState extends State<Camera> {
                       : Icon(
                           Icons.panorama_fish_eye,
                           size: 80.sp,
-                          color: white.withOpacity(0.8),
+                          color: white,
                         ),
                 ),
                 IconButton(
@@ -120,7 +120,7 @@ class _CameraState extends State<Camera> {
                       child: Icon(
                         Icons.flip_camera_ios,
                         size: 32.sp,
-                        color: white.withOpacity(0.8),
+                        color: white,
                       ),
                     )),
               ],
